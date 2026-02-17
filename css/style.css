@@ -675,52 +675,64 @@ textarea {
 }
 
 /* ✨ RE-DESIGN: MAGIC ORACLE ORB (V18.1) */
+/* ✨ RE-DESIGN: SOVEREIGN ORACLE RING (V18.2) */
 .wish-input-wrapper {
     position: relative;
     width: 100%;
 }
 
-.oracle-container {
+.oracle-container-centered {
     position: absolute;
-    bottom: 12px;
-    right: 12px;
+    bottom: -35px;
+    /* Floating below for better spacing */
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 6px;
-    z-index: 10;
+    justify-content: center;
+    z-index: 20;
 }
 
-.oracle-hint-tag {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.55rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    background: rgba(26, 60, 52, 0.8);
-    backdrop-filter: blur(5px);
-    color: var(--gold-bright);
-    padding: 3px 8px;
-    border-radius: 4px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transform: translateY(5px);
-    opacity: 0.7;
-    transition: all 0.3s ease;
+.oracle-text-ring {
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    pointer-events: none;
+    animation: ringRotate 20s linear infinite;
+}
+
+.ring-svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+}
+
+@keyframes ringRotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .magic-oracle-orb {
-    width: 45px;
-    height: 45px;
+    width: 55px;
+    height: 55px;
     background: var(--gold-leaf);
     border: none;
     border-radius: 50%;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     cursor: pointer;
-    box-shadow: 0 8px 15px rgba(178, 141, 66, 0.4);
+    box-shadow: 0 10px 25px rgba(178, 141, 66, 0.4);
     transition: all 0.5s var(--ease-majestic);
     display: flex;
     align-items: center;
     justify-content: center;
     animation: orbPulse 3s infinite ease-in-out;
+    position: relative;
+    z-index: 2;
 }
 
 @keyframes orbPulse {
@@ -728,25 +740,18 @@ textarea {
     0%,
     100% {
         transform: scale(1);
-        box-shadow: 0 8px 15px rgba(178, 141, 66, 0.4);
+        filter: brightness(1);
     }
 
     50% {
-        transform: scale(1.1);
-        box-shadow: 0 12px 25px rgba(178, 141, 66, 0.6);
+        transform: scale(1.08);
+        filter: brightness(1.2);
     }
 }
 
 .magic-oracle-orb:hover {
-    transform: rotate(180deg) scale(1.15);
-    filter: brightness(1.2);
-}
-
-.magic-oracle-orb:hover+.oracle-hint-tag,
-.oracle-container:hover .oracle-hint-tag {
-    opacity: 1;
-    transform: translateY(0);
-    background: var(--royal-green);
+    transform: scale(1.15);
+    box-shadow: 0 15px 35px rgba(178, 141, 66, 0.6);
 }
 
 .magic-oracle-orb:active {

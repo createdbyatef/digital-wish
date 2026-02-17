@@ -210,9 +210,10 @@ function initTouchTrail() {
             x: x, y: y,
             age: 0,
             opacity: 1,
-            size: Math.random() * 8 + 4,
-            vx: (Math.random() - 0.5) * 2,
-            vy: (Math.random() - 0.5) * 2
+            size: Math.random() * 15 + 10,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: (Math.random() - 0.5) * 1.5 - 1, // Slight upward drift
+            rotation: Math.random() * Math.PI * 2
         });
     };
 
@@ -230,20 +231,26 @@ function initTouchTrail() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         points.forEach((p, i) => {
             p.age += 1;
-            p.opacity -= 0.015;
+            p.opacity -= 0.012;
             p.x += p.vx;
             p.y += p.vy;
+            p.rotation += 0.02;
 
             if (p.opacity <= 0) {
                 points.splice(i, 1);
                 return;
             }
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size * p.opacity, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(212, 175, 55, ${p.opacity})`;
+
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rotation);
+            ctx.globalAlpha = p.opacity;
+            ctx.fillStyle = '#d4af37';
             ctx.shadowBlur = 15;
             ctx.shadowColor = '#d4af37';
-            ctx.fill();
+            ctx.font = `${p.size}px serif`;
+            ctx.fillText('❤️', -p.size / 2, p.size / 2);
+            ctx.restore();
         });
         requestAnimationFrame(draw);
     }

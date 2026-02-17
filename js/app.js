@@ -206,16 +206,13 @@ function initTouchTrail() {
     resize();
 
     const addPoint = (x, y) => {
-        // 🚀 Skip some points to save performance
-        if (Math.random() > 0.4) return;
-
         points.push({
             x: x, y: y,
             age: 0,
             opacity: 1,
-            size: Math.random() * 10 + 8,
-            vx: (Math.random() - 0.5) * 1.2,
-            vy: (Math.random() - 0.5) * 1.2 - 0.5,
+            size: Math.random() * 12 + 10,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: (Math.random() - 0.5) * 1.5 - 0.8,
             rotation: Math.random() * Math.PI * 2
         });
     };
@@ -224,19 +221,21 @@ function initTouchTrail() {
     window.addEventListener('touchmove', (e) => {
         const touch = e.touches[0];
         addPoint(touch.clientX, touch.clientY);
-    });
+    }, { passive: true });
+
     window.addEventListener('touchstart', (e) => {
         const touch = e.touches[0];
         addPoint(touch.clientX, touch.clientY);
-    });
+    }, { passive: true });
 
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         points.forEach((p, i) => {
             p.age += 1;
-            p.opacity -= 0.02; // Faster decay for performance
+            p.opacity -= 0.015; // Slowed down slightly for better visibility
             p.x += p.vx;
             p.y += p.vy;
+            p.rotation += 0.02;
 
             if (p.opacity <= 0) {
                 points.splice(i, 1);

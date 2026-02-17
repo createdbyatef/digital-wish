@@ -1,7 +1,7 @@
 // 💎 SUPABASE CONFIG: Majestic Connection Active!
 const SUPABASE_URL = 'https://dnnriugtvcehicqpbxkd.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRubnJpdWd0dmN2ZWhpY3FwYnhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMDkxOTUsImV4cCI6MjA4Njg4NTE5NX0.YwDJrOLc9jQqzDXBoPbGuvUKB-6fuy8ATvG8SvSjAjQ';
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const fileInput = document.getElementById('file-input');
 const mainCaptureBtn = document.getElementById('main-capture-btn');
@@ -282,7 +282,7 @@ function spawnHearts(x, y) {
  */
 async function loadGallery() {
     try {
-        const { data: wishes, error } = await supabase
+        const { data: wishes, error } = await supabaseClient
             .from('wishes')
             .select('*')
             .order('created_at', { ascending: false })
@@ -431,19 +431,19 @@ submitBtn.addEventListener('click', async () => {
         const fileName = `wish_${Date.now()}.jpg`;
 
         // 🎞️ 2. Upload to Supabase Storage
-        const { data: uploadData, error: uploadError } = await supabase.storage
+        const { data: uploadData, error: uploadError } = await supabaseClient.storage
             .from('memories')
             .upload(fileName, blob);
 
         if (uploadError) throw uploadError;
 
         // 🎞️ 3. Get Public URL
-        const { data: { publicUrl } } = supabase.storage
+        const { data: { publicUrl } } = supabaseClient.storage
             .from('memories')
             .getPublicUrl(fileName);
 
         // 🎞️ 4. Save to Database
-        const { error: dbError } = await supabase
+        const { error: dbError } = await supabaseClient
             .from('wishes')
             .insert([{ image_url: publicUrl, wish: txt }]);
 

@@ -1,7 +1,13 @@
 // 💎 SUPABASE CONFIG: Majestic Connection Active!
 const SUPABASE_URL = 'https://dnnriugtvcehicqpbxkd.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRubnJpdWd0dmN2ZWhpY3FwYnhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMDkxOTUsImV4cCI6MjA4Njg4NTE5NX0.YwDJrOLc9jQqzDXBoPbGuvUKB-6fuy8ATvG8SvSjAjQ';
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let supabaseClient;
+try {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+} catch (e) {
+    console.error("Critical: Supabase library failed to load. Check Adblocker!");
+}
 
 const fileInput = document.getElementById('file-input');
 const mainCaptureBtn = document.getElementById('main-capture-btn');

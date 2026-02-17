@@ -416,30 +416,41 @@ function triggerBloom() {
 }
 
 /**
- * ✨ PUBLISH WISH: Supabase Cloud Storage
+ * ✨ PUBLISH WISH: Supabase Cloud Storage (V14.4 Robust)
  */
+function dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while (n--) { u8arr[n] = bstr.charCodeAt(n); }
+    return new File([u8arr], filename, { type: mime });
+}
+
 submitBtn.addEventListener('click', async () => {
     const txt = wishText.value.trim();
-    if (!txt || !capturedImage) return;
+    if (!txt || !capturedImage) {
+        alert("Sila ambil gambar & tulis ucapan dulu!");
+        return;
+    }
 
     submitBtn.disabled = true;
     submitBtn.innerHTML = "<span>SENDING...</span>";
 
     try {
-        // 🎞️ 1. Convert Base64 to Blob
-        const blob = await (await fetch(capturedImage)).blob();
+        // 🎞️ 1. Convert Base64 to Real File
         const fileName = `wish_${Date.now()}.jpg`;
+        const file = dataURLtoFile(capturedImage, fileName);
 
         // 🎞️ 2. Upload to Supabase Storage
         const { data: uploadData, error: uploadError } = await supabaseClient.storage
             .from('memories')
-            .upload(fileName, blob, {
+            .upload(fileName, file, {
+                contentType: 'image/jpeg',
                 cacheControl: '3600',
                 upsert: false
             });
 
         if (uploadError) {
-            console.error("Storage Error:", uploadError);
+            alert("Gagal upload gambar: " + uploadError.message);
             throw uploadError;
         }
 
@@ -454,11 +465,11 @@ submitBtn.addEventListener('click', async () => {
             .insert([{ image_url: publicUrl, wish: txt }]);
 
         if (dbError) {
-            console.error("Database Error:", dbError);
+            alert("Gagal simpan ucapan: " + dbError.message);
             throw dbError;
         }
 
-        // 🌸 CELEBRATION
+        // 🌸 SUCCESS CELEBRATION
         submitBtn.innerHTML = "<span>PUBLISHED ❤️</span>";
         triggerBloom();
         playSFX('success');

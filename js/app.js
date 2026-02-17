@@ -316,8 +316,6 @@ async function loadGallery() {
             });
         }, { threshold: 0.1 });
 
-        const seals = ['A', 'I', '❦'];
-
         wishes.forEach((item, i) => {
             const rot = (Math.random() * 8 - 4).toFixed(2);
             const tile = document.createElement('div');
@@ -325,11 +323,11 @@ async function loadGallery() {
             tile.style.setProperty('--rot', `${rot}deg`);
             tile.style.transitionDelay = `${i * 80}ms`;
 
-            // 🏷️ ROYAL BRANDING: Use couple's initials instead of random guest letters
-            const sealContent = seals[i % seals.length];
+            // 🏷️ ROYAL BRANDING: Uniform 'A ❦ I' for prestige look
+            const sealContent = "A ❦ I";
 
             tile.innerHTML = `
-                <div class="wax-seal">${sealContent}</div>
+                <div class="wax-seal" style="font-size: 0.75rem; letter-spacing: -1px;">${sealContent}</div>
                 <div class="cameo-frame">
                     <div class="shiny-glass"></div>
                     <div class="tile-corner-decor tl"></div>

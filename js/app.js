@@ -2,11 +2,12 @@
 const SUPABASE_URL = 'https://dnnriugtvcehicqpbxkd.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRubnJpdWd0dmN2ZWhpY3FwYnhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMDkxOTUsImV4cCI6MjA4Njg4NTE5NX0.YwDJrOLc9jQqzDXBoPbGuvUKB-6fuy8ATvG8SvSjAjQ';
 
-let supabaseClient;
+let supabaseClient = null;
 try {
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log("Majestic Hint: Enjin Supabase Berjaya Dihisap!");
 } catch (e) {
-    console.error("Critical: Supabase library failed to load. Check Adblocker!");
+    console.error("Critical: Enjin Supabase Gagal!", e);
 }
 
 const fileInput = document.getElementById('file-input');
@@ -284,10 +285,12 @@ function spawnHearts(x, y) {
 }
 
 /**
- * 🖼️ ELEGANT MASONRY LOADER (V14.5 - Majestic Fail-Safe)
+ * 🖼️ ELEGANT MASONRY LOADER (V15 - Absolute Sovereign)
  */
 async function loadGallery() {
-    console.log("Majestic Hint: Memulakan pencarian memori dkt Supabase...");
+    if (!supabaseClient) return;
+
+    console.log("Majestic Hint: Sedang memuatkan memori...");
     try {
         const { data: wishes, error } = await supabaseClient
             .from('wishes')
@@ -296,13 +299,13 @@ async function loadGallery() {
             .limit(16);
 
         if (error) {
-            console.warn("Royal Gallery Info: Tetamu belum hantar ucapan lagi atau SQL belum RUN.", error);
-            wishGallery.innerHTML = '<div class="empty-gallery-hint">Be the first to share a blessing...</div>';
+            console.warn("Gallery Info: Mungkin SQL polisy belum setel.", error);
+            wishGallery.innerHTML = '<div class="empty-gallery-hint">Awaiting the first royal blessing...</div>';
             return;
         }
 
         if (!wishes || wishes.length === 0) {
-            wishGallery.innerHTML = '<div class="empty-gallery-hint">Awaiting the first royal blessing...</div>';
+            wishGallery.innerHTML = '<div class="empty-gallery-hint">No memories found yet. Be the first!</div>';
             return;
         }
 
@@ -358,7 +361,7 @@ async function loadGallery() {
             observer.observe(tile);
         });
     } catch (e) {
-        console.error("Critical Error: Gallery engine crash.", e);
+        console.error("Gallery Crash:", e);
         wishGallery.innerHTML = '<div class="empty-gallery-hint">The Archive is resting. Please try again later.</div>';
     }
 }
@@ -433,19 +436,17 @@ function triggerBloom() {
 }
 
 /**
- * ✨ PUBLISH WISH: Supabase Cloud Storage (V14.4 Robust)
+ * ✨ PUBLISH WISH: Supabase Cloud Storage (V15 Reliable)
  */
-function dataURLtoFile(dataurl, filename) {
-    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-    while (n--) { u8arr[n] = bstr.charCodeAt(n); }
-    return new File([u8arr], filename, { type: mime });
-}
-
-submitBtn.addEventListener('click', async () => {
+async function uploadToSupabase() {
     const txt = wishText.value.trim();
     if (!txt || !capturedImage) {
         alert("Sila ambil gambar & tulis ucapan dulu!");
+        return;
+    }
+
+    if (!supabaseClient) {
+        alert("Sistem Supabase belum sedia. Sila refresh!");
         return;
     }
 
@@ -453,40 +454,48 @@ submitBtn.addEventListener('click', async () => {
     submitBtn.innerHTML = "<span>SENDING...</span>";
 
     try {
-        // 🎞️ 1. Convert Base64 to Real File
-        const fileName = `wish_${Date.now()}.jpg`;
-        const file = dataURLtoFile(capturedImage, fileName);
+        // 🎞️ 1. Convert Base64 directly to Blob (Safer Method)
+        const base64Data = capturedImage.split(',')[1];
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'image/jpeg' });
 
-        // 🎞️ 2. Upload to Supabase Storage
+        const fileName = `wish_${Date.now()}.jpg`;
+
+        // 🎞️ 2. Upload to Storage
         const { data: uploadData, error: uploadError } = await supabaseClient.storage
             .from('memories')
-            .upload(fileName, file, {
+            .upload(fileName, blob, {
                 contentType: 'image/jpeg',
                 cacheControl: '3600',
                 upsert: false
             });
 
         if (uploadError) {
-            alert("Gagal upload gambar: " + uploadError.message);
+            alert("Error Upload Gambar: " + uploadError.message);
             throw uploadError;
         }
 
-        // 🎞️ 3. Get Public URL
+        // 🎞️ 3. Get URL
         const { data: { publicUrl } } = supabaseClient.storage
             .from('memories')
             .getPublicUrl(fileName);
 
-        // 🎞️ 4. Save to Database
+        // 🎞️ 4. Save Wish
         const { error: dbError } = await supabaseClient
             .from('wishes')
             .insert([{ image_url: publicUrl, wish: txt }]);
 
         if (dbError) {
-            alert("Gagal simpan ucapan: " + dbError.message);
+            alert("Error Simpan Wish: " + dbError.message);
             throw dbError;
         }
 
-        // 🌸 SUCCESS CELEBRATION
+        // 🌸 SUCCESS
         submitBtn.innerHTML = "<span>PUBLISHED ❤️</span>";
         triggerBloom();
         playSFX('success');
@@ -504,11 +513,13 @@ submitBtn.addEventListener('click', async () => {
         }, 3000);
 
     } catch (e) {
-        console.error(e);
+        console.error("Publish Failed:", e);
         submitBtn.disabled = false;
         submitBtn.innerHTML = "<span>RETRY</span>";
     }
-});
+}
+
+submitBtn.addEventListener('click', uploadToSupabase);
 
 document.addEventListener('DOMContentLoaded', () => {
     runRoyalSequence();

@@ -1,0 +1,1284 @@
+:root {
+    --gold-leaf: linear-gradient(135deg, #b28d42 0%, #d4af37 50%, #b28d42 100%);
+    --gold-bright: #f0cb62;
+    --royal-green: #1a3c34;
+    --pure-white: #ffffff;
+    --cream-luxe: #fdfaf5;
+    --slate: #2d3436;
+    --shadow-grand: 0 50px 100px -20px rgba(0, 0, 0, 0.1);
+    --ease-majestic: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background-color: var(--cream-luxe);
+    color: var(--slate);
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+}
+
+body.is-loading {
+    overflow: hidden;
+    height: 100vh;
+}
+
+body.is-loading #app {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* 🌿 SWAYING BOTANICALS */
+.floral-item {
+    animation: leafSway 10s infinite ease-in-out;
+    transform-origin: center;
+}
+
+.floral-item.bottom-right {
+    animation-delay: -5s;
+}
+
+@keyframes leafSway {
+
+    0%,
+    100% {
+        transform: rotate(0deg) scale(1.05);
+    }
+
+    50% {
+        transform: rotate(5deg) scale(1);
+    }
+}
+
+/* ✨ MAGIC DUST & AURA ENGINE */
+#touch-trail {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    /* Di sebalik content, di atas Aura/Background */
+    pointer-events: none;
+}
+
+#sparkle-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.aura-sphere {
+    position: fixed;
+    width: 80vw;
+    height: 80vw;
+    background: radial-gradient(circle, rgba(26, 60, 52, 0.05) 0%, transparent 70%);
+    filter: blur(80px);
+    z-index: 1;
+    pointer-events: none;
+    animation: auraFloat 20s infinite ease-in-out;
+}
+
+.aura-sphere.one {
+    top: -20%;
+    left: -20%;
+}
+
+.aura-sphere.two {
+    bottom: -20%;
+    right: -20%;
+    animation-delay: -10s;
+}
+
+@keyframes auraFloat {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    33% {
+        transform: translate(10vw, 5vh) scale(1.2);
+    }
+
+    66% {
+        transform: translate(-5vw, 10vh) scale(0.9);
+    }
+}
+
+.sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #d4af37;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #d4af37;
+    animation: sparkleFlow linear infinite;
+}
+
+@keyframes sparkleFlow {
+    0% {
+        transform: translateY(0) scale(0);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100vh) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* 🎭 ROYAL PRELOADER CURTAIN */
+#grand-preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    /* Sentiasa paling atas masa loading */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: visibility 0s 1.8s;
+}
+
+#grand-preloader.loaded {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.preloader-overlay {
+    position: absolute;
+    top: 0;
+    width: 51%;
+    height: 100%;
+    background: var(--pure-white);
+    transition: transform 1.8s var(--ease-majestic);
+}
+
+.preloader-overlay.left {
+    left: 0;
+    border-right: 0.5px solid rgba(178, 141, 66, 0.1);
+}
+
+.preloader-overlay.right {
+    right: 0;
+    border-left: 0.5px solid rgba(178, 141, 66, 0.1);
+}
+
+#grand-preloader.loaded .preloader-overlay.left {
+    transform: translateX(-100%);
+}
+
+#grand-preloader.loaded .preloader-overlay.right {
+    transform: translateX(101%);
+}
+
+.preloader-content {
+    position: relative;
+    z-index: 2010;
+    text-align: center;
+}
+
+#grand-preloader.loaded .preloader-content {
+    opacity: 0;
+    transform: scale(1.1) translateY(-20px);
+    transition: 1.2s;
+}
+
+.royal-crest {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 30px;
+}
+
+.crest-path {
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    animation: draw 2.5s forwards;
+    stroke: #b28d42;
+}
+
+@keyframes draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.crest-text {
+    font-family: 'Pinyon Script', cursive;
+    font-size: 25px;
+    fill: var(--royal-green);
+    opacity: 0;
+    animation: fadeIn 1s 1.2s forwards;
+}
+
+.preloader-names {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeIn 1s 0.8s forwards;
+    letter-spacing: 2px;
+}
+
+.preloader-names span {
+    font-family: 'Pinyon Script', cursive;
+    color: #b28d42;
+}
+
+/* 🏛️ MAJESTIC LAYOUT SHELL */
+.main-shell {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 80px 24px 80px;
+    position: relative;
+    z-index: 100;
+    opacity: 0;
+    transition: 1.8s var(--ease-majestic);
+}
+
+.is-active.main-shell {
+    opacity: 1;
+}
+
+/* HEADER PRESTIGE */
+.majestic-header {
+    text-align: center;
+    margin-bottom: 6vh;
+    padding-top: 20px;
+}
+
+.royal-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #b28d42;
+    display: block;
+    margin-bottom: 25px;
+    opacity: 0.6;
+    font-weight: 600;
+}
+
+.name-bloom-container {
+    position: relative;
+    display: inline-block;
+    padding: 0 40px;
+}
+
+.bloom-halo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(178, 141, 66, 0.08) 0%, transparent 70%);
+    z-index: -1;
+    filter: blur(20px);
+}
+
+.majestic-names {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    font-weight: 300;
+    margin: 10px 0;
+    color: var(--royal-green);
+    position: relative;
+    text-shadow: 0 10px 40px rgba(26, 60, 52, 0.1);
+}
+
+.shimmer-gold {
+    background: linear-gradient(to right,
+            var(--royal-green) 0%,
+            var(--royal-green) 40%,
+            #d4af37 50%,
+            var(--royal-green) 60%,
+            var(--royal-green) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: goldSweep 4s infinite linear;
+}
+
+@keyframes goldSweep {
+    to {
+        background-position: 200% center;
+    }
+}
+
+.heart-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 10000;
+    font-size: 1.5rem;
+    animation: heartFly 1s ease-out forwards;
+}
+
+@keyframes heartFly {
+    0% {
+        transform: scale(0) rotate(0);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1) translateY(-100px) rotate(var(--rot));
+        opacity: 0;
+    }
+}
+
+.majestic-names span {
+    font-family: 'Pinyon Script', cursive;
+    font-size: 3.2rem;
+    color: #b28d42;
+    vertical-align: middle;
+    margin: 0 5px;
+}
+
+.royal-divider-suite {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.flourish-left,
+.flourish-right {
+    width: 50px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(178, 141, 66, 0.4));
+}
+
+.flourish-right {
+    background: linear-gradient(to left, transparent, rgba(178, 141, 66, 0.4));
+}
+
+.gold-divider-v2 {
+    color: #b28d42;
+    font-size: 1.4rem;
+    transform: translateY(-2px);
+    text-shadow: 0 0 10px rgba(178, 141, 66, 0.3);
+}
+
+.wedding-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-style: italic;
+    opacity: 0.6;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.date-hero {
+    border-top: 1px solid rgba(178, 141, 66, 0.15);
+    border-bottom: 1px solid rgba(178, 141, 66, 0.15);
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 0.85rem;
+    letter-spacing: 5px;
+    color: #b28d42;
+    font-weight: 500;
+}
+
+/* 📸 INVITATION HERO CENTRAL */
+.invitation-hero {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.hero-center-piece {
+    position: relative;
+}
+
+.halo-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 220px;
+    height: 220px;
+    border: 0.5px solid rgba(178, 141, 66, 0.1);
+    border-radius: 50%;
+    animation: ringPulse 6s infinite;
+}
+
+@keyframes ringPulse {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.3);
+    }
+}
+
+.floating-sparkle-v2 {
+    font-size: 1.5rem;
+    color: #b28d42;
+    margin-bottom: 30px;
+    animation: floatY 4s infinite ease-in-out;
+}
+
+@keyframes floatY {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+/* 💎 PINNACLE CAPTURE BUTTON */
+.gold-foil-btn-pinnacle {
+    position: relative;
+    background: var(--gold-leaf);
+    color: white;
+    border: none;
+    padding: 26px 55px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 30px 70px rgba(178, 141, 66, 0.35);
+    transition: 0.6s var(--ease-majestic);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-gleam {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: gleamLoop 4s infinite linear;
+}
+
+@keyframes gleamLoop {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+.gold-foil-btn-pinnacle:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 45px 90px rgba(178, 141, 66, 0.45);
+}
+
+.gold-foil-btn-pinnacle:active {
+    transform: scale(0.94);
+}
+
+/* 🎞️ PREMIUM PREVIEW FRAME */
+.premium-lens-frame {
+    background: white;
+    padding: 12px;
+    border-radius: 35px;
+    box-shadow: var(--shadow-grand);
+    max-width: 330px;
+    margin: 0 auto 50px;
+    position: relative;
+}
+
+.inner-shadow-border {
+    position: absolute;
+    inset: 15px;
+    border: 0.5px solid rgba(178, 141, 66, 0.2);
+    border-radius: 26px;
+    pointer-events: none;
+}
+
+.lens-glass {
+    border-radius: 26px;
+    overflow: hidden;
+    background: #fdfdfd;
+    aspect-ratio: 4/5;
+}
+
+#photo-review img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: revealImage 1.4s var(--ease-majestic);
+}
+
+@keyframes revealImage {
+    from {
+        opacity: 0;
+        transform: scale(1.1);
+        filter: blur(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+/* 🏛️ ROYAL WISH CARD */
+.royal-wish-card {
+    background: white;
+    border-radius: 40px;
+    padding: 55px 35px;
+    box-shadow: var(--shadow-grand);
+    border: 1px solid rgba(178, 141, 66, 0.08);
+}
+
+textarea {
+    width: 100%;
+    height: 180px;
+    border: none;
+    background: transparent;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    text-align: center;
+    color: var(--royal-green);
+    line-height: 1.4;
+    outline: none;
+}
+
+.wish-label {
+    font-size: 0.65rem;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #b28d42;
+    display: block;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.wish-controls {
+    display: flex;
+    gap: 18px;
+    margin-top: 50px;
+    justify-content: center;
+}
+
+.btn-royal-gold {
+    flex: 1;
+    max-width: 220px;
+    background: var(--gold-leaf);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    padding: 24px 0;
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 4px;
+    box-shadow: 0 20px 50px rgba(178, 141, 66, 0.3);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.5s;
+}
+
+.link-btn-premium {
+    flex: 1;
+    max-width: 150px;
+    background: transparent;
+    border: 1px solid rgba(178, 141, 66, 0.25);
+    border-radius: 100px;
+    padding: 24px 0;
+    color: #b28d42;
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+/* 🌸 CELEBRATION BLOOM: Petal & Gold Rain */
+.bloom-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.petal,
+.gold-flake {
+    position: absolute;
+    top: -10vh;
+    animation: fall linear forwards;
+}
+
+.petal {
+    width: 25px;
+    height: 20px;
+    background: #ff7eb3;
+    /* Soft Rose */
+    border-radius: 50% 0 50% 50%;
+    filter: drop-shadow(0 5px 10px rgba(255, 126, 179, 0.3));
+}
+
+.gold-flake {
+    width: 6px;
+    height: 6px;
+    background: var(--gold-leaf);
+    border-radius: 2px;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(110vh) translateX(var(--drift)) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* 📜 ORACLE OF WISDOM: AI Royal Button */
+.wish-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.oracle-magic-btn {
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--royal-green);
+    border: 1px solid var(--gold-leaf);
+    color: var(--gold-bright);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: 0.5s var(--ease-majestic);
+    z-index: 10;
+}
+
+.oracle-magic-btn:hover {
+    transform: scale(1.1) rotate(15deg);
+    background: var(--gold-leaf);
+    color: white;
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+}
+
+.oracle-magic-btn .sparkle-icon {
+    font-size: 1.2rem;
+    animation: magicSpin 3s infinite linear;
+}
+
+@keyframes magicSpin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 🎞️ CAMERA REVEAL EFFECTS */
+.light-leak-effect {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, rgba(212, 175, 55, 0.1) 0%, transparent 40%, rgba(212, 175, 55, 0.05) 100%);
+    z-index: 5;
+    pointer-events: none;
+    animation: leakPulse 4s infinite alternate;
+}
+
+@keyframes leakPulse {
+    from {
+        opacity: 0.3;
+    }
+
+    to {
+        opacity: 0.6;
+    }
+}
+
+#time-greeting {
+    transition: color 1s;
+    font-weight: 600;
+}
+
+.greeting-morning {
+    color: #b28d42;
+}
+
+.greeting-evening {
+    color: #1a3c34;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+}
+
+/* 🖼️ ELEGANT MASONRY: The Keepsake Collection */
+/* 🎞️ THE LIVING ARCHIVE (V10 - Jeweled Edition) */
+.gallery-grand-view {
+    margin-top: 15vh;
+    text-align: center;
+    padding: 0 15px 150px;
+    perspective: 2000px;
+}
+
+/* 🎞️ THE MODERN GILDED FRAME */
+
+.gallery-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--royal-green);
+    letter-spacing: 4px;
+    margin-bottom: 60px;
+}
+
+.elegant-masonry {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    transform-style: preserve-3d;
+}
+
+/* 🖼️ THE BLOOM REVEAL */
+.bloom-reveal {
+    opacity: 0;
+    transform: perspective(1000px) rotateX(10deg) scale(0.9) translateY(40px);
+    filter: blur(10px);
+    transition: 1.5s var(--ease-majestic);
+}
+
+.bloom-reveal.in-view {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(0) scale(1) translateY(0);
+    filter: blur(0);
+}
+
+/* 🎞️ THE WAX SEAL MONOGRAM */
+.wax-seal {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 50px;
+    height: 50px;
+    background: #8b0000;
+    /* Deep Royal Red */
+    background: radial-gradient(circle, #b22222 0%, #8b0000 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f0cb62;
+    font-family: 'Pinyon Script', cursive;
+    font-size: 1.4rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 30;
+    transform: rotate(-10deg);
+    border: 2px solid rgba(240, 203, 98, 0.3);
+    pointer-events: none;
+    /* Biar tak kacau klik gambar */
+}
+
+.wax-seal::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border: 1px solid rgba(240, 203, 98, 0.2);
+    border-radius: 50%;
+}
+
+/* 🎞️ THE MODERN KEEPSAKE */
+.grand-tile {
+    background: #fff;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.05);
+    position: relative;
+    border: 1px solid rgba(178, 141, 66, 0.1);
+    cursor: zoom-in;
+    transition: transform 0.6s var(--ease-majestic), box-shadow 0.6s;
+    animation: floatingSway 6s infinite ease-in-out;
+}
+
+@keyframes floatingSway {
+
+    0%,
+    100% {
+        transform: perspective(1000px) rotateY(var(--rot)) translateY(0);
+    }
+
+    50% {
+        transform: perspective(1000px) rotateY(var(--rot)) translateY(-10px);
+    }
+}
+
+.grand-tile:nth-child(even) {
+    animation-delay: -3s;
+}
+
+.grand-tile:hover {
+    z-index: 100;
+    box-shadow: 0 50px 100px rgba(178, 141, 66, 0.2);
+    animation-play-state: paused;
+}
+
+.cameo-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1/1;
+    /* Petak Square Power */
+    overflow: hidden;
+    border-radius: 14px;
+    /* Soft Modern Corners */
+    border: 1px solid rgba(178, 141, 66, 0.1);
+    background: #fdfdfd;
+}
+
+/* Shiny Glass Reflection */
+.shiny-glass {
+    position: absolute;
+    inset: 0;
+    z-index: 15;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, transparent 50%, rgba(255, 255, 255, 0.05) 100%);
+    pointer-events: none;
+    opacity: 0;
+    transition: 0.6s;
+}
+
+.grand-tile:hover .shiny-glass {
+    opacity: 1;
+}
+
+.tile-corner-decor {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border: 1px solid var(--gold-bright);
+    z-index: 20;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.tile-corner-decor.tl {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 14px 0 0 0;
+}
+
+.tile-corner-decor.tr {
+    top: 0;
+    right: 0;
+    border-left: none;
+    border-bottom: none;
+    border-radius: 0 14px 0 0;
+}
+
+.cameo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 1.5s var(--ease-majestic);
+}
+
+.grand-tile:hover img {
+    transform: scale(1.1);
+}
+
+.grand-caption-v9 {
+    padding: 20px 5px 10px;
+    position: relative;
+}
+
+.quote-mark {
+    display: block;
+    font-size: 1.2rem;
+    color: #b28d42;
+    margin-bottom: 5px;
+    opacity: 0.4;
+}
+
+.grand-caption-v9 p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--royal-green);
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+/* 🌿 PHASE & REVEAL ENGINE */
+.ux-phase {
+    display: none;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: 1.4s var(--ease-majestic);
+}
+
+.ux-phase.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal-sequence>* {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 1.6s var(--ease-majestic);
+}
+
+.is-active .reveal-sequence>* {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.is-active .reveal-sequence>*:nth-child(2) {
+    transition-delay: 0.3s;
+}
+
+.is-active .reveal-sequence>*:nth-child(3) {
+    transition-delay: 0.6s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 🖼️ ROYAL LIGHTBOX (The Great Reveal) */
+.lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.8s var(--ease-majestic);
+}
+
+.lightbox-overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.lightbox-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(26, 60, 52, 0.95);
+    backdrop-filter: blur(20px);
+}
+
+.lightbox-content {
+    position: relative;
+    z-index: 5010;
+    width: 90%;
+    max-width: 500px;
+    transform: translateY(50px) scale(0.9);
+    transition: 0.8s var(--ease-majestic);
+}
+
+.lightbox-overlay.active .lightbox-content {
+    transform: translateY(0) scale(1);
+}
+
+.lightbox-image-wrapper {
+    background: white;
+    padding: 12px;
+    border-radius: 30px;
+    box-shadow: 0 50px 120px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-image-wrapper img {
+    width: 100%;
+    border-radius: 20px;
+    display: block;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+}
+
+.lightbox-caption {
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.lightbox-wish-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-style: italic;
+    color: var(--royal-green);
+    line-height: 1.4;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: -60px;
+    right: 0;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 10px;
+    transition: 0.3s;
+}
+
+.lightbox-close:hover {
+    transform: rotate(90deg);
+    color: #b28d42;
+}
+
+/* 🎶 ROYAL MUSIC CONTROLLER: Floating Aesthetic */
+.music-controller {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 1000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    border-radius: 100px;
+    border: 1px solid rgba(178, 141, 66, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: all 0.5s var(--ease-majestic);
+    opacity: 0;
+    transform: translateX(-30px);
+}
+
+.is-active.main-shell .music-controller {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.music-disc {
+    width: 44px;
+    height: 44px;
+    background: var(--gold-leaf);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(178, 141, 66, 0.3);
+    animation: rotateDisc 4s infinite linear;
+    animation-play-state: paused;
+}
+
+.music-controller.playing .music-disc {
+    animation-play-state: running;
+}
+
+@keyframes rotateDisc {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.disc-inner {
+    width: 12px;
+    height: 12px;
+    background: var(--cream-luxe);
+    border-radius: 50%;
+    border: 2px solid rgba(178, 141, 66, 0.2);
+}
+
+.music-waves {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 15px;
+    margin-right: 10px;
+}
+
+.music-waves span {
+    width: 3px;
+    background: #b28d42;
+    border-radius: 10px;
+    animation: waveAnim 1s infinite ease-in-out;
+    animation-play-state: paused;
+}
+
+.music-controller.playing .music-waves span {
+    animation-play-state: running;
+}
+
+.music-waves span:nth-child(2) {
+    animation-delay: 0.2s;
+    height: 100%;
+}
+
+.music-waves span:nth-child(1) {
+    height: 60%;
+}
+
+.music-waves span:nth-child(3) {
+    animation-delay: 0.4s;
+    height: 80%;
+}
+
+@keyframes waveAnim {
+
+    0%,
+    100% {
+        height: 5px;
+    }
+
+    50% {
+        height: 15px;
+    }
+}
+
+.music-controller:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.05);
+}
+
+/* 🏛️ ROYAL FOOTER: The Legacy Finale (V10) */
+.royal-footer {
+    padding: 120px 20px 80px;
+    text-align: center;
+    position: relative;
+    border-top: 1px solid rgba(178, 141, 66, 0.05);
+    margin-top: 50px;
+}
+
+.footer-inner {
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+.footer-divider {
+    width: 60px;
+    height: 1px;
+    background: var(--gold-leaf);
+    margin: 0 auto 50px;
+    opacity: 0.3;
+}
+
+.footer-crest-v2 {
+    font-family: 'Pinyon Script', cursive;
+    font-size: 3.5rem;
+    color: #b28d42;
+    margin-bottom: 20px;
+    text-shadow: 0 10px 30px rgba(178, 141, 66, 0.15);
+    animation: fadeIn 2s ease-out;
+}
+
+.footer-crest-v2 span {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 300;
+    margin: 0 8px;
+    vertical-align: middle;
+    opacity: 0.6;
+}
+
+.footer-thank-you {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--royal-green);
+    opacity: 0.6;
+    margin-bottom: 60px;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+}
+
+.footer-meta {
+    border-top: 1px solid rgba(178, 141, 66, 0.1);
+    padding-top: 50px;
+    position: relative;
+}
+
+.footer-meta::before {
+    content: "✨";
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--cream-luxe);
+    padding: 0 15px;
+    font-size: 0.8rem;
+}
+
+.hashtag-v2 {
+    font-size: 0.7rem;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: #b28d42;
+    display: block;
+    margin-bottom: 22px;
+    font-weight: 700;
+    background: var(--gold-leaf);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.crafted-credit {
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--slate);
+    opacity: 0.25;
+    font-weight: 400;
+}

@@ -248,8 +248,15 @@ function initTouchTrail() {
             ctx.rotate(p.rotation);
             ctx.globalAlpha = p.opacity;
             ctx.fillStyle = '#d4af37';
-            ctx.font = `${p.size}px serif`;
-            ctx.fillText('❤️', -p.size / 2, p.size / 2);
+
+            // 💛 DRAW ROYAL GOLD HEART
+            ctx.beginPath();
+            const s = p.size;
+            ctx.moveTo(0, s * 0.3);
+            ctx.bezierCurveTo(-s / 2, -s / 2, -s, s * 0.3, 0, s);
+            ctx.bezierCurveTo(s, s * 0.3, s / 2, -s / 2, 0, s * 0.3);
+            ctx.fill();
+
             ctx.restore();
         });
         requestAnimationFrame(draw);

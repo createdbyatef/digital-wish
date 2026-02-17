@@ -423,7 +423,7 @@ submitBtn.addEventListener('click', async () => {
     if (!txt || !capturedImage) return;
 
     submitBtn.disabled = true;
-    submitBtn.innerHTML = "<span>PUBLISHED ❤️</span>";
+    submitBtn.innerHTML = "<span>SENDING...</span>";
 
     try {
         // 🎞️ 1. Convert Base64 to Blob
@@ -433,9 +433,15 @@ submitBtn.addEventListener('click', async () => {
         // 🎞️ 2. Upload to Supabase Storage
         const { data: uploadData, error: uploadError } = await supabaseClient.storage
             .from('memories')
-            .upload(fileName, blob);
+            .upload(fileName, blob, {
+                cacheControl: '3600',
+                upsert: false
+            });
 
-        if (uploadError) throw uploadError;
+        if (uploadError) {
+            console.error("Storage Error:", uploadError);
+            throw uploadError;
+        }
 
         // 🎞️ 3. Get Public URL
         const { data: { publicUrl } } = supabaseClient.storage
@@ -447,9 +453,13 @@ submitBtn.addEventListener('click', async () => {
             .from('wishes')
             .insert([{ image_url: publicUrl, wish: txt }]);
 
-        if (dbError) throw dbError;
+        if (dbError) {
+            console.error("Database Error:", dbError);
+            throw dbError;
+        }
 
         // 🌸 CELEBRATION
+        submitBtn.innerHTML = "<span>PUBLISHED ❤️</span>";
         triggerBloom();
         playSFX('success');
 

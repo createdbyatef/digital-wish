@@ -278,9 +278,10 @@ function spawnHearts(x, y) {
 }
 
 /**
- * 🖼️ ELEGANT MASONRY LOADER (V14 - Supabase Zero-Cost Engine)
+ * 🖼️ ELEGANT MASONRY LOADER (V14.5 - Majestic Fail-Safe)
  */
 async function loadGallery() {
+    console.log("Majestic Hint: Memulakan pencarian memori dkt Supabase...");
     try {
         const { data: wishes, error } = await supabaseClient
             .from('wishes')
@@ -288,7 +289,16 @@ async function loadGallery() {
             .order('created_at', { ascending: false })
             .limit(16);
 
-        if (error) throw error;
+        if (error) {
+            console.warn("Royal Gallery Info: Tetamu belum hantar ucapan lagi atau SQL belum RUN.", error);
+            wishGallery.innerHTML = '<div class="empty-gallery-hint">Be the first to share a blessing...</div>';
+            return;
+        }
+
+        if (!wishes || wishes.length === 0) {
+            wishGallery.innerHTML = '<div class="empty-gallery-hint">Awaiting the first royal blessing...</div>';
+            return;
+        }
 
         wishGallery.innerHTML = '';
         const observer = new IntersectionObserver((entries) => {
@@ -342,7 +352,8 @@ async function loadGallery() {
             observer.observe(tile);
         });
     } catch (e) {
-        console.error("Royal Gallery Hint: Supabase tak sedia lagi atau API Key salah.");
+        console.error("Critical Error: Gallery engine crash.", e);
+        wishGallery.innerHTML = '<div class="empty-gallery-hint">The Archive is resting. Please try again later.</div>';
     }
 }
 
